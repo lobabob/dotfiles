@@ -1,4 +1,5 @@
-" VIM CONFIG FILE
+"           VIM CONFIG FILE
+"---------------------------------------
 
 " tab = 4 spaces
 set smartindent
@@ -42,7 +43,16 @@ nnoremap <CR> :noh<CR><CR>
 " Better command-line completion
 set wildmenu
 
-"Show partial commands in the last line of the screen
-set showcmd
+" Show partial commands in the last line of the screen
+"set showcmd
 
+" Set to 256 colors
+set t_Co=256
+
+" Dark background
+"set background=dark
+
+" Highlight text over 80 columns wide
+highlight OverLength ctermbg=darkred ctermfg=white guibg=#FFD9D9
+match OverLength /\%80v.*/
 
