@@ -1,4 +1,4 @@
-vimrc
+Config
 =====
 
-My personal VIM config file
+This holds all my general configurations for the programs I use on most *nix systems.
