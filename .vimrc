@@ -6,6 +6,7 @@ set smartindent
 set tabstop=4
 set shiftwidth=4
 set expandtab
+set softtabstop=4
 
 " Enable line numbers
 set number
@@ -21,7 +22,7 @@ set autoindent
 set copyindent
 
 " Auto read when a file is changed from the outside
-"set autoread
+set autoread
 
 " Ignore case when searching
 set ignorecase
@@ -49,10 +50,38 @@ set wildmenu
 " Set to 256 colors
 set t_Co=256
 
-" Dark background
-"set background=dark
-
 " Highlight text over 80 columns wide
 highlight OverLength ctermbg=darkred ctermfg=white guibg=#FFD9D9
 match OverLength /\%80v.*/
+
+" Colorscheme stuff if any
+"colorscheme 256-jungle
+"colorscheme jellybeans
+"colorscheme kolor
+"colorscheme molokai
+
+colorscheme wombat256mod
+set background=light
+
+" :highlight Normal ctermfg=grey ctermbg=darkblue
+
+"       Plugin stuff
+"----------------------------
+
+"indentLine
+set list lcs=tab:\|\
+let g:indentLine_char='|'
+let g:indentLine_color_term = 239
+let g:indentLine_color_gui = '#A4E57E'
+let g:indentLine_enabled = 1
+
+"vim-airline
+let g:airline_section_b = '%{strftime("%c")}'
+let g:airline_section_y = 'BN: %{bufnr("%")}'
+set laststatus=2
+"let g:airline_left_sep = '▶'
+"let g:airline_right_sep = '◀'
+
+
+
 
