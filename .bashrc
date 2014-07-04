@@ -1,9 +1,17 @@
 # Aliases
 ###########
 
-alias ls="ls --color=auto"
+alias ls="ls --color=auto -F --group-directories-first"
 alias cls='clear'
 alias grep="grep --color=auto"
+
+alias fuck="fortune"
+alias shit="fortune"
+alias damn="fortune"
+alias fuk="fortune"
+alias fuc="fortune"
+alias fak="fortune"
+
 
 # Exports
 ###########
@@ -18,13 +26,18 @@ TERM=xterm-256color
 force_color_prompt=yes
 color_prompt=yes
 
+# Terminal Statusbar at the top
+#PROMPT_COMMAND="pwd"
+
+
 # Prompt Settings
 ###################
 
 if [ "$color_prompt" = yes ]; then
-    PS1="${debian_chroot:+($debian_chroot)}\[\033[00;36m\]\u@\h\[\033[00m\]:\w\$"
+    PS1="${debian_chroot:+($debian_chroot)}\
+\[\033[00;36m\]\u@\h\[\033[01;31m\]:\W\[\033[00m\]\$ \[\033[00m\]"
 else
-    PS1="${debian_chroot:+($debian_chroot)}\u@\h:\w\$"
+    PS1="${debian_chroot:+($debian_chroot)}\u@\h:\W\$ "
 fi
 
 
