@@ -1,5 +1,6 @@
 TERM=xterm-256color
-
+export EDITOR=vim
+alias ls="ls --color=auto"
 
 extract() {
     if [ -f $1 ] ; then
