@@ -1,6 +1,36 @@
-TERM=xterm-256color
-export EDITOR=vim
+# Aliases
+###########
+
 alias ls="ls --color=auto"
+alias cls='clear'
+alias grep="grep --color=auto"
+
+# Exports
+###########
+
+export EDITOR=vim
+
+# Terminal Settings
+#####################
+
+#TERM=xterm-color
+TERM=xterm-256color
+force_color_prompt=yes
+color_prompt=yes
+
+# Prompt Settings
+###################
+
+if [ "$color_prompt" = yes ]; then
+    PS1="${debian_chroot:+($debian_chroot)}\[\033[00;36m\]\u@\h\[\033[00m\]:\w\$"
+else
+    PS1="${debian_chroot:+($debian_chroot)}\u@\h:\w\$"
+fi
+
+
+
+# Functions
+#############
 
 extract() {
     if [ -f $1 ] ; then
