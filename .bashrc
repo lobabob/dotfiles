@@ -25,6 +25,7 @@ export EDITOR=vim
 TERM=xterm-256color
 force_color_prompt=yes
 color_prompt=yes
+mesg no
 
 # Terminal Statusbar at the top
 #PROMPT_COMMAND="pwd"
