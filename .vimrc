@@ -68,20 +68,47 @@ set background=light
 "       Plugin stuff
 "----------------------------
 
-"indentLine
+"***** indentLine
 set list lcs=tab:\|\
 let g:indentLine_char='|'
 let g:indentLine_color_term = 239
 let g:indentLine_color_gui = '#A4E57E'
 let g:indentLine_enabled = 1
 
-"vim-airline
-let g:airline_section_b = '%{strftime("%c")}'
-let g:airline_section_y = 'BN: %{bufnr("%")}'
-set laststatus=2
-"let g:airline_left_sep = '▶'
-"let g:airline_right_sep = '◀'
+"***** vim-airline
+" Customized sections of statusbar
+function! AirlineInit()
+    let g:airline_section_a = airline#section#create(['mode',' ','branch'])
+    let g:airline_section_b = airline#section#create(['ffenc', 'hunks'])
+    let g:airline_section_y = airline#section#create(['L:%l', ' ', 'C:%c'])
+    let g:airline_section_z = airline#section#create_right(['%p%%'])
 
+    " Displays ASCII value of char hovered over by cursor in hex
+    "let g:airline_section_z = airline#section#create_right(['%B'])
+
+    "let g:airline_section_b = '%{strftime("%c")}'
+    "let g:airline_section_y = 'BN: %{bufnr("%")}'
+endfunction
+autocmd VimEnter * call AirlineInit()
+
+set laststatus=2    " Allows statusbar to show up with one window
+
+" Custom Seperator for statusbar
+let g:airline_left_sep = ''
+let g:airline_right_sep = ''
+
+" Tabline options
+let g:airline#extensions#tabline#enabled = 1
+"let g:airline#extensions#tabline#left_sep = ' '
+"let g:airline#extensions#tabline#left_alt_sep = '|'
+
+" fugitive integration with airline (fugitive is git wrapper)
+if !exists('g:airline_symbols')
+    let g:airline_symbols = {}
+endif
+let g:airline_symbols.branch = "|"
+let g:airline#extensions#branch#enabled = 1
+"let g:airline#extensions#branch#empty_message = ''
 
 
 
