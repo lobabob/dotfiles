@@ -4,6 +4,7 @@
 alias ls="ls --color=auto -F --group-directories-first"
 alias cls='clear'
 alias grep="grep --color=auto"
+alias tmux="tmux -l"
 
 alias fuck="fortune"
 alias shit="fortune"
@@ -36,7 +37,7 @@ mesg no
 
 if [ "$color_prompt" = yes ]; then
     PS1="${debian_chroot:+($debian_chroot)}\
-\[\033[00;36m\]\u@\h\[\033[01;31m\]:\W\[\033[00m\]\$ \[\033[00m\]"
+\[\033[00;32m\]\u@\h\[\033[01;33m\]:\W\[\033[00m\]\$ \[\033[00m\]"
 else
     PS1="${debian_chroot:+($debian_chroot)}\u@\h:\W\$ "
 fi

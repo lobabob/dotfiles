@@ -51,7 +51,7 @@ set wildmenu
 set t_Co=256
 
 " Buffers screen updates instead of updating all the time
-set lazyredraw
+"set lazyredraw
 
 " Highlight text over 80 columns wide
 highlight OverLength ctermbg=darkred ctermfg=white guibg=#FFD9D9
