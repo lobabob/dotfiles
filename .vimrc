@@ -53,10 +53,6 @@ set t_Co=256
 " Buffers screen updates instead of updating all the time
 "set lazyredraw
 
-" Highlight text over 80 columns wide
-highlight OverLength ctermbg=darkred ctermfg=white guibg=#FFD9D9
-match OverLength /\%80v.*/
-
 " Colorscheme stuff if any
 "colorscheme 256-jungle
 "colorscheme jellybeans
@@ -66,7 +62,9 @@ match OverLength /\%80v.*/
 colorscheme wombat256mod
 set background=light
 
-" :highlight Normal ctermfg=grey ctermbg=darkblue
+" Highlight text over 80 columns wide
+highlight OverLength ctermbg=darkred ctermfg=white guibg=#FFD9D9
+match OverLength /\%80v.*/
 
 "       Plugin stuff
 "----------------------------
