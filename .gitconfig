@@ -9,6 +9,6 @@
 [color "status"]
 added = green
 changed = cyan
-untracked = yellow blink
+untracked = yellow dim
 deleted = red
 
