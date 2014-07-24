@@ -2,8 +2,11 @@
 ###########
 
 alias ls="ls --color=auto -F --group-directories-first"
+alias dir="dir --color=auto"
 alias cls='clear'
 alias grep="grep --color=auto"
+alias fgrep="fgrep --color=auto"
+alias egrep="egrep --color=auto"
 alias tmux="tmux -l"
 alias tree="tree --charset='-' -C"
 
