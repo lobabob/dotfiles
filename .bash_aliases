@@ -3,6 +3,7 @@
 
 alias ls="ls --color=auto -F --group-directories-first"
 alias lsl="ls -l"
+alias lsa="ls -a"
 alias dir="dir --color=auto"
 alias cls='clear'
 alias grep="grep --color=auto"
