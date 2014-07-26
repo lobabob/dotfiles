@@ -5,6 +5,7 @@
 
 [color]
     status = auto
+	ui = auto
 
 [color "status"]
 added = green
