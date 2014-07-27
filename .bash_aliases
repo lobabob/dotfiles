@@ -19,4 +19,7 @@ alias fuk="fortune"
 alias fuc="fortune"
 alias fak="fortune"
 
+# Raspberry Pi Specific
+alias temp='echo -e $(echo "scale=3; $(cat /sys/class/thermal/'\
+'thermal_zone0/temp)/1000" | bc)"\u00B0C"'
 
