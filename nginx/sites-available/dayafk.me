@@ -1,0 +1,44 @@
+server {
+    listen 80 default_server;
+    #listen [::]:80 default_server ipv6only=on;
+
+    server_name dayafk.me www.dayafk.me;
+
+    root /var/www/dayafk.me/html/;
+    
+    access_log /var/log/nginx/dayafk.me.access.log;
+    error_log /var/log/nginx/dayafk.me.error.log;
+    
+    # error_pages
+
+    location / {
+        try_files $URI $URI/ =404;
+    }
+
+    location ~ \.php$ {
+        try_files $uri =404;   # Prevents arbitrary execution of php-files
+        include fastcgi_params;
+        fastcgi_pass unix:/var/run/php5-fpm.sock;
+        fastcgi_index index.php;
+    }
+
+    location ~* \.(?:ico|css|js|gif|jpe?g|png)$ {
+        # Some basic cache-control for static files to be sent to the browser
+        expires max;
+        add_header Pragma public;
+        add_header Cache-Control "public, must-revalidate, proxy-revalidate";
+    }
+
+    location /vids {
+        root /media/storage/;
+        try_files $URI $URI/ =404;  # Does not work with alias
+        aio on;
+        directio 512;
+        output_buffers 1 2m;   
+        limit_rate_after 2m;
+        limit_rate 100k;
+    }
+
+    include drop.conf;
+}
+
