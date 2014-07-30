@@ -21,4 +21,6 @@ alias fak="fortune"
 
 # Raspberry Pi Specific
 alias temp='sed "s/\(...\)$/.\1°C/" < /sys/class/thermal/thermal_zone0/temp'
+alias reload='sudo /etc/init.d/nginx configtest && '\
+'sudo /etc/init.d/nginx reload'
 
