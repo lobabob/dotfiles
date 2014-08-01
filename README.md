@@ -11,3 +11,7 @@ wget http://archive.raspbian.org/raspbian.public.key -O - | sudo apt-key add -
 To change locale
 sudo dpkg-reconfigure locales
 
+To get latest armhf version of node
+wget http://node-arm.herokuapp.com/node_latest_armhf.deb
+sudo dpkg -i node_latest_armhf.deb
+
