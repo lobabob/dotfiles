@@ -22,4 +22,5 @@ alias fak="fortune"
 # Raspberry Pi Specific
 alias temp='sed "s/\(...\)$/.\1°C/" < /sys/class/thermal/thermal_zone0/temp'
 alias reload='sudo /etc/init.d/nginx reload'
+alias nodered='cd /home/pi/node-red ; node --max-old-space-size=128 red.js'
 
