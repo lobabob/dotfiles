@@ -63,8 +63,8 @@ colorscheme wombat256mod
 set background=light
 
 " Highlight text over 80 columns wide
-highlight OverLength ctermbg=darkred ctermfg=white guibg=#FFD9D9
-match OverLength /\%80v.*/
+"highlight OverLength ctermbg=darkred ctermfg=white guibg=#FFD9D9
+"match OverLength /\%80v.*/
 
 "       Plugin stuff
 "----------------------------
