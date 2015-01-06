@@ -3,13 +3,16 @@
     name = Farhankhan Daya
     username = lobabob
 
+[push]
+    default = matching
+
 [color]
     status = auto
-	ui = auto
+    ui = auto
 
 [color "status"]
-added = green
-changed = cyan
-untracked = yellow dim
-deleted = red
+    added = green
+    changed = cyan
+    untracked = yellow dim
+    deleted = red
 
