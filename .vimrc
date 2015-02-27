@@ -69,6 +69,9 @@ set background=light
 "       Plugin stuff
 "----------------------------
 
+execute pathogen#infect()
+filetype plugin indent on
+
 "***** indentLine
 set list lcs=tab:\|\
 let g:indentLine_char='|'
