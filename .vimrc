@@ -1,6 +1,9 @@
 "           VIM CONFIG FILE
 "---------------------------------------
 
+set nofoldenable
+set paste
+
 " tab = 4 spaces
 set smartindent
 set tabstop=4
