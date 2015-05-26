@@ -1,7 +1,7 @@
 "           VIM CONFIG FILE
 "---------------------------------------
 
-set nofoldenable
+"set nofoldenable
 set paste
 
 " tab = 4 spaces
