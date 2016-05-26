@@ -1,0 +1,23 @@
+#!/bin/bash
+# Usage: Create symlinks for all relevant files in home directory
+
+FILES="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/.*"
+BLACKLIST=("." ".." ".git")
+
+for f in $FILES
+do
+    FLAG=0
+
+    # Check if file should be symlinked or not
+    for b in "${BLACKLIST[@]}"
+    do
+        if [ $b == $(basename $f) ]; then
+            FLAG=1
+            break
+        fi
+    done
+
+    if [ $FLAG -eq 0 ]; then
+        ln -vfs $f ~/$(basename $f)
+    fi
+done

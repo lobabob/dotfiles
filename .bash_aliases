@@ -9,7 +9,6 @@ alias cls='clear'
 alias grep="grep --color=auto"
 alias fgrep="fgrep --color=auto"
 alias egrep="egrep --color=auto"
-alias tmux="tmux -l"
 alias tree="tree --charset='-' -C"
 
 alias fuck="fortune"
