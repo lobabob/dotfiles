@@ -18,6 +18,6 @@ do
     done
 
     if [ $FLAG -eq 0 ]; then
-        ln -vfs $f ~/$(basename $f)
+        ln -vfs $f ~/
     fi
 done
