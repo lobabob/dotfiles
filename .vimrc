@@ -4,12 +4,12 @@
 "set nofoldenable
 set paste
 
-" tab = 4 spaces
+" tab = 2 spaces
 set smartindent
-set tabstop=4
-set shiftwidth=4
+set tabstop=2
+set shiftwidth=2
 set expandtab
-set softtabstop=4
+set softtabstop=2
 
 " Enable line numbers
 set number
