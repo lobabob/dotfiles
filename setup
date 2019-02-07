@@ -22,7 +22,7 @@ do
   fi
 
   if [ $BLACKLISTED -eq 0 ]; then
-    ln -vfs $f ~/
+    ln -bvfs $f ~/
   fi
 done
 
