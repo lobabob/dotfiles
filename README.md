@@ -1,9 +1,22 @@
-Config
-=====
+# Custom Config
 
-Holds custom configurations that should apply to most *nix systems I use and set up.
+Contains common custom configurations to use when setting up a new *nix system.
 
-Useful info for Raspberry Pi:
+## Where to Clone
+
+```
+mkdir ~/.config
+cd ~/.config
+git clone https://github.com/lobabob/custom-configs
+```
+
+## How to Setup
+
+```
+./setup
+```
+
+## If running on Raspberry PI
 
 To add public key for repo, do this:
 ```
