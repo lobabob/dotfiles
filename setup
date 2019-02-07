@@ -1,23 +1,28 @@
 #!/bin/bash
 # Usage: Create symlinks for all relevant files in home directory
 
-FILES="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/.*"
-BLACKLIST=("." ".." ".git")
+FILES="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/.*"
+BLACKLIST=("." ".." ".git" ".gitignore")
 
 for f in $FILES
 do
-    FLAG=0
+  BLACKLISTED=0
 
-    # Check if file should be symlinked or not
-    for b in "${BLACKLIST[@]}"
-    do
-        if [ $b == $(basename $f) ]; then
-            FLAG=1
-            break
-        fi
-    done
-
-    if [ $FLAG -eq 0 ]; then
-        ln -vfs $f ~/
+  # Check if file should be symlinked or not
+  for b in "${BLACKLIST[@]}"
+  do
+    if [[ $(basename $f) == $b ]]; then
+      BLACKLISTED=1
+      break
     fi
+  done
+
+  if [ $BLACKLISTED -eq 0 ] && git check-ignore -q $(basename $f); then
+    BLACKLISTED=1
+  fi
+
+  if [ $BLACKLISTED -eq 0 ]; then
+    ln -vfs $f ~/
+  fi
 done
+
