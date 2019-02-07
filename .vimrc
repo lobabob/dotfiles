@@ -62,8 +62,8 @@ set t_Co=256
 "colorscheme kolor
 "colorscheme molokai
 
-colorscheme wombat256mod
 set background=light
+colorscheme wombat256mod
 
 " Highlight text over 80 columns wide
 "highlight OverLength ctermbg=darkred ctermfg=white guibg=#FFD9D9
@@ -85,16 +85,16 @@ let g:indentLine_enabled = 1
 "***** vim-airline
 " Customized sections of statusbar
 function! AirlineInit()
-    let g:airline_section_a = airline#section#create(['mode',' ','branch'])
-    let g:airline_section_b = airline#section#create(['ffenc', 'hunks'])
-    let g:airline_section_y = airline#section#create(['L:%l', ' ', 'C:%c'])
-    let g:airline_section_z = airline#section#create_right(['%p%%'])
+  let g:airline_section_a = airline#section#create(['mode',' ','branch'])
+  let g:airline_section_b = airline#section#create(['ffenc', 'hunks'])
+  let g:airline_section_y = airline#section#create(['L:%l', ' ', 'C:%c'])
+  let g:airline_section_z = airline#section#create_right(['%p%%'])
 
-    " Displays ASCII value of char hovered over by cursor in hex
-    "let g:airline_section_z = airline#section#create_right(['%B'])
+  " Displays ASCII value of char hovered over by cursor in hex
+  "let g:airline_section_z = airline#section#create_right(['%B'])
 
-    "let g:airline_section_b = '%{strftime("%c")}'
-    "let g:airline_section_y = 'BN: %{bufnr("%")}'
+  "let g:airline_section_b = '%{strftime("%c")}'
+  "let g:airline_section_y = 'BN: %{bufnr("%")}'
 endfunction
 autocmd VimEnter * call AirlineInit()
 
@@ -111,11 +111,9 @@ let g:airline#extensions#tabline#enabled = 1
 
 " fugitive integration with airline (fugitive is git wrapper)
 if !exists('g:airline_symbols')
-    let g:airline_symbols = {}
+  let g:airline_symbols = {}
 endif
 let g:airline_symbols.branch = "|"
 let g:airline#extensions#branch#enabled = 1
 "let g:airline#extensions#branch#empty_message = ''
-
-
 
