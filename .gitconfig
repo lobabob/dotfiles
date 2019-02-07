@@ -1,18 +1,18 @@
 [user]
-    email = lobabob@users.noreply.github.com
-    name = Farhankhan Daya
-    username = lobabob
+  email = lobabob@users.noreply.github.com
+  name = Farhankhan Daya
+  username = lobabob
 
 [push]
-    default = matching
+  default = matching
 
 [color]
-    status = auto
-    ui = auto
+  status = auto
+  ui = auto
 
 [color "status"]
-    added = green
-    changed = cyan
-    untracked = yellow dim
-    deleted = red
+  added = green
+  changed = cyan
+  untracked = yellow dim
+  deleted = red
 
