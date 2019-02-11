@@ -111,12 +111,12 @@ declare -r packages
 ######## Install stow if not present
 
 auto_detect_pkg_mgr() {
-  if which apt > /dev/null; then
+  if which brew > /dev/null; then
+    eval "$1=brew"
+  elif which apt > /dev/null; then
     eval "$1=apt"
   elif which apt-get > /dev/null; then
     eval "$1=apt-get"
-  elif which brew > /dev/null; then
-    eval "$1=brew"
   elif which dnf > /dev/null; then
     eval "$1=dnf"
   elif which yum > /dev/null; then
@@ -136,13 +136,13 @@ if ! which stow > /dev/null; then
   echo -n "Update package lists before installing stow (y/n): "
   read update_package_lists
 
-  if [[ $update_package_lists == y?(es) ]]; then
+  if [[ $update_package_lists =~ ^(y|yes)$ ]]; then
     echo_warn "Updating package lists..."
 
-    if [[ $pkg_mgr == pacman ]]; then
-      sudo pacman --refresh > /dev/null 2>&1
-    elif [[ $pkg_mgr == dnf ]]; then
-      sudo dnf --refresh > /dev/null 2>&1
+    if [[ $pkg_mgr == pacman || $pkg_mgr == dnf ]]; then
+      sudo $pkg_mgr --refresh > /dev/null 2>&1
+    elif [[ $pkg_mgr == brew ]]; then
+      brew update > /dev/null 2>&1
     else
       sudo $pkg_mgr update > /dev/null 2>&1
     fi
@@ -152,7 +152,7 @@ if ! which stow > /dev/null; then
   if [[ $pkg_mgr == pacman ]]; then
     sudo pacman -S stow
   elif [[ $pkg_mgr == brew ]]; then
-    brew install -y stow
+    brew install stow
   else
     sudo $pkg_mgr install -y stow
   fi
