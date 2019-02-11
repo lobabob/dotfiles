@@ -16,3 +16,6 @@
   untracked = yellow dim
   deleted = red
 
+[merge]
+  tool = vimdiff
+
