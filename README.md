@@ -8,63 +8,53 @@ The installation is managed by [GNU Stow](https://www.gnu.org/software/stow/). R
 
 ## Usage
 
-#### Install configurations
+With no packages specifed, all packages will be (un)installed by default. Specifying packages will (un)install only those packages. (Un)installs are idempotent. 
 
-By default, all the configurations present in the repo will be installed. A subset of the config packages can be installed if their names are provided to the setup script.
+Under the hood, everything is being symlinked so updates are as simple as `git pull`. If there are any conflicts during installation, conflicting files are automatically backed up to `repo/_backup`.
 
-Everything is installed via symlinking. So if there are any new changes in the repo, you can just do a `git pull` and the updates will be reflected in all install locations.
-
-If there are any conflicts during the process (e.g. default .bashrc already exists in home directory), conflicting files are moved to a backup directory created within the repo (`~/.dotfiles/_backup/`).
+Uninstalling a package will auto-restore any backup dotfiles that exist for that package. If you don't care about restoring potential backups, you can also manually uninstall with Stow directly, but I wouldn't recommend that.
 
 ```bash
-git clone https://github.com/lobabob/dotfiles.git ~/.dotfiles
-~/.dotfiles/setup
+# See a super helpful help screen
+./setup --help
 
-# Or if you want to install specific config packages.
-~/.dotfiles/setup vim tmux
-```
+# Install packages
+./setup               # all packages
+./setup bash vim      # only bash and vim packages
 
-#### Uninstall configurations
-
-This will remove all symlinks that were created during the install process and restore any files that were moved to backup in the case of a conflict during the initial install phase. E.g. uninstalling the bash package would restore the original default `.bashrc` file that existed before the install ever happened.
-
-```bash
-~/.dotfiles/setup --uninstall
-
-# Or to uninstall specific config packages
-~/.dotfiles/setup --uninstall vim tmux
-```
-
-If you don't care about restoring potential backups, you can also manually uninstall with Stow directly
-
-```
-cd ~/.dotfiles
-stow -D vim
+# Uninstall packages
+./setup --uninstall   # all packages
+./setup -u bash vim   # only bash and vim packages
 ```
 
 #### How to add a new package
 
-Create a base level folder to encompass a set of dotfiles and place your dotfiles in it. Basically, everything present in the config package is merged with the home directory. Directory names that start with `_` are reserved for use by the setup script.
+Base level folder is your package. All the dotfiles that belong to that package go in that folder. Complex layouts are supported (e.g. a package needing dotfiles in `~/.local/share`).
 
-Some Examples
-```bash
+Directory names that start with `_` are reserved for use by the setup script.
+
+```
 # Simple example
-.dotfiles/
+repo/
  └─ bash
     ├─ .bash_profile
     ├─ .bash_aliases
     └─ .bashrc
 
-# Complex example for some random app called fakeapp
-.dotfiles/
- └─ fakeapp
+# Complex example
+repo/
+ └─ fake_package
     ├─ .config
-    |   └─ some_other_config_file
+    |   └─ some_config_file
     ├─ .local
     |   └─ share
     |      └─ some_other_config_file
-    └─ .fakeapp
+    └─ .yet_another_config_file
 ```
 
-Why do it this way instead of throwing everything in the root of the repo? That would work, but eventually you have a ton of dotfiles in a disorganized mess. Separating them by a config package name is much easier to work with and manage. Especially as the number of dotfiles continues to grow.
+## But why though?
+
+Why do it this way instead of throwing everything in the root of the repo and symlinking everything to the home directory?
+
+That would work, but eventually you have a ton of dotfiles in a disorganized mess. Separating them by a config package name is much easier to work with and manage. Especially as the number of dotfiles continues to grow. Additionally, this structure makes it easier to selectively install, uninstall, backup, and restore subsets of the existing dotfiles.
 
