@@ -13,6 +13,9 @@ force_color_prompt=yes
 color_prompt=yes
 mesg no
 
+# Enable vi editing mode in bash
+set -o vi
+
 # Don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
 HISTCONTROL=ignoreboth

@@ -39,6 +39,24 @@ set hlsearch
 " Allows you to remove highlighting after done with search
 nnoremap <CR> :noh<CR><CR>
 
+" Adds hotkeys to cycle through buffers
+:nnoremap <Tab> :bnext<CR>
+:nnoremap <S-Tab> :bprevious<CR>
+
+" Simpler split navigation
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
+nnoremap <lt> <C-W><lt>
+nnoremap > <C-W>>
+nnoremap - <C-W>-
+nnoremap + <C-W>+
+
+" Causes new split locations to match intuition
+set splitright 
+set splitbelow
+
 " Visual word wrapping
 "set wm=4
 "set lbr
