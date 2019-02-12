@@ -2,7 +2,6 @@
 "---------------------------------------
 
 "set nofoldenable
-set paste
 
 " start searching before pressing enter
 set incsearch
