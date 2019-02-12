@@ -1,0 +1,7 @@
+#!/bin/bash
+
+if ! which stow > /dev/null; then
+  echo_info "GNU Stow is required for this script to run. Attempting to auto-install..."
+  install_bin "stow"
+fi
+

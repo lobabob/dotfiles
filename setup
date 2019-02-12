@@ -59,7 +59,7 @@ done
 
 declare -r packages
 
-######## Install stow if not present
+######## Framework for installing packages
 
 auto_detect_pkg_mgr() {
   if which brew > /dev/null; then
@@ -128,10 +128,6 @@ install_bin() {
   echo_success "[$1] installed"
 }
 
-if ! which stow > /dev/null; then
-  echo_info "GNU Stow is required for this script to run. Attempting to auto-install..."
-  install_bin "stow"
-fi
 
 ######## (Un)install dotfile packages
 
@@ -178,18 +174,26 @@ setup_sub_scripts() {
 if [[ $uninstall_mode == 0 ]]; then
   backup
   setup_sub_scripts
-  stow -t $HOME -d $BASE_DIR --ignore="_" --no-folding ${packages[@]} || \
-    (echo_error "Dotfiles failed to install for ${packages[*]}"; exit 10)
-  #IFS=" "   # For OSX Compatability
+  stow -t $HOME -d $BASE_DIR --ignore="_" -R stow
+  stow -t $HOME -d $BASE_DIR --no-folding --ignore="_" -R ${packages[@]}
+
+  if [[ $? -gt 0 ]]; then
+    echo_error "Dotfiles failed to install for ${packages[*]}"
+    exit 10
+  fi
+
   echo_success "Dotfiles installed for ${packages[*]}"
 else
   stow -t $HOME -d $BASE_DIR -n -D ${packages[@]} > /dev/null 2>&1 
   if [[ $? == 0 ]]; then
-    stow -t $HOME -d $BASE_DIR -D ${packages[@]} > /dev/null || \
-      (echo_error "Dotfiles failed to uninstall ${packages[*]}"; exit 10)
+    stow -t $HOME -d $BASE_DIR -D ${packages[@]} > /dev/null
+    if [[ $? -gt 0 ]]; then
+      echo_error "Dotfiles failed to uninstall ${packages[*]}"
+      exit 10
+    fi
+
     restore
   fi
-  #IFS=" "   # For OSX Compatability
   echo_success "Dotfiles uninstalled for ${packages[*]}"
 fi
 
