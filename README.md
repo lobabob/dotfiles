@@ -20,7 +20,7 @@ Uninstalling a package will auto-restore any backup dotfiles that exist for that
 
 # Install packages
 ./setup               # all packages
-./setup --no-scripts  # all packages and don't execute any package specific install scripts
+./setup --no-scripts  # all packages, but only symlink (don't run package specific install scripts)
 ./setup bash vim      # only bash and vim packages
 
 # Uninstall packages
