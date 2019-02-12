@@ -37,13 +37,13 @@ navigate='                                                             \
     tmux_navigation_command=$1;                                        \
     vim_navigation_command=$2;                                         \
     vim_navigation_only_if=${3:-true};                                 \
-    resize_op=${4:-false};                                             \
+    vim_captive=${4:-false};                                           \
     if pane_contains_vim && eval "$vim_navigation_only_if"; then       \
       if pane_contains_neovim_terminal; then                           \
         tmux send-keys C-\\ C-n;                                       \
       fi;                                                              \
       eval "$vim_navigation_command";                                  \
-      if ! pane_is_zoomed && ! eval "$resize_op"; then                 \
+      if ! pane_is_zoomed && ! eval "$vim_captive"; then               \
         sleep $vim_navigation_timeout; : wait for Vim to change title; \
         if ! pane_title_changed; then                                  \
           eval "$tmux_navigation_command";                             \
@@ -68,6 +68,10 @@ resize_up="$navigate 'tmux resize-pane -U'  'tmux send-keys C-w +' true true"
 resize_left="$navigate 'tmux resize-pane -L'  'tmux send-keys C-w \"<\"' true true"
 resize_right="$navigate 'tmux resize-pane -R'  'tmux send-keys C-w \">\"' true true"
 
+# Vertical/Horizontal split terminology is reversed between Vim and Tmux.
+split_vertical="$navigate 'tmux split-window -h'  'tmux send-keys M-\\' true true"
+split_horizontal="$navigate 'tmux split-window'  'tmux send-keys M--' true true"
+
 # QWERTY keys - comment these out if you don't use QWERTY layout!
 bind-key -n C-h run-shell "$navigate_left  &"
 bind-key -n C-j run-shell "$navigate_down  &"
@@ -80,10 +84,6 @@ bind-key -n M-k run-shell "$resize_up &"
 bind-key -n M-h run-shell "$resize_left &"
 bind-key -n M-l run-shell "$resize_right &"
 
-# Dvorak keys - comment these out if you don't use Dvorak layout!
-# bind-key -n M-d run-shell "$navigate_back  &"
-# bind-key -n M-h run-shell "$navigate_left  &"
-# bind-key -n M-t run-shell "$navigate_up    &"
-# bind-key -n M-n run-shell "$navigate_down  &"
-# bind-key -n M-s run-shell "$navigate_right &"
+bind-key -n M-\ run-shell "$split_vertical &"
+bind-key -n M-- run-shell "$split_horizontal &"
 

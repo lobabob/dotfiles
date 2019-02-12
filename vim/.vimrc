@@ -61,6 +61,8 @@ let progname = substitute($VIM, '.*[/\\]', '', '')
 set title titlestring=%{progname}\ %f\ +%l\ #%{tabpagenr()}.%{winnr()}
 if &term =~ '^screen' && !has('nvim') | exe "set t_ts=\e]2; t_fs=\7" | endif
 
+set mouse=a
+
 " Simpler split navigation
 nnoremap <C-j> <C-W><C-j>
 nnoremap <C-k> <C-W><C-k>
@@ -78,8 +80,10 @@ nnoremap <Esc>l <C-W>>
 nnoremap <Esc>h <C-W><lt>
 
 " Simpler pane splitting
-nnoremap <Bar> :vsp<CR>
-nnoremap <Bslash> :sp<CR>
+nnoremap <M-\> :vsp<CR>
+nnoremap <M--> :sp<CR>
+nnoremap <Esc>\ :vsp<CR>
+nnoremap <Esc>- :sp<CR>
 
 " Causes new split locations to match intuition
 set splitright 
