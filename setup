@@ -178,7 +178,7 @@ setup_sub_scripts() {
 if [[ $uninstall_mode == 0 ]]; then
   backup
   setup_sub_scripts
-  stow -t $HOME -d $BASE_DIR --ignore="_" ${packages[@]} || \
+  stow -t $HOME -d $BASE_DIR --ignore="_" --no-folding ${packages[@]} || \
     (echo_error "Dotfiles failed to install for ${packages[*]}"; exit 10)
   #IFS=" "   # For OSX Compatability
   echo_success "Dotfiles installed for ${packages[*]}"
