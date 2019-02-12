@@ -4,6 +4,12 @@
 "set nofoldenable
 set paste
 
+" start searching before pressing enter
+set incsearch
+
+" number of context lines above and below the cursor
+set scrolloff=1
+
 " tab = 2 spaces
 set smartindent
 set tabstop=2
@@ -39,19 +45,43 @@ set hlsearch
 " Allows you to remove highlighting after done with search
 nnoremap <CR> :noh<CR><CR>
 
+" Don't show mode in last line of screen. Airline already does that.
+set noshowmode
+
+" Highlight the current line
+set cursorline
+
 " Adds hotkeys to cycle through buffers
 :nnoremap <Tab> :bnext<CR>
 :nnoremap <S-Tab> :bprevious<CR>
 
+" Intelligently navigate tmux panes and Vim splits using the same keys.
+" See https://sunaku.github.io/tmux-select-pane.html for documentation.
+let progname = substitute($VIM, '.*[/\\]', '', '')
+set title titlestring=%{progname}\ %f\ +%l\ #%{tabpagenr()}.%{winnr()}
+if &term =~ '^screen' && !has('nvim') | exe "set t_ts=\e]2; t_fs=\7" | endif
+
 " Simpler split navigation
-nnoremap <C-J> <C-W><C-J>
-nnoremap <C-K> <C-W><C-K>
-nnoremap <C-L> <C-W><C-L>
-nnoremap <C-H> <C-W><C-H>
-nnoremap <lt> <C-W><lt>
-nnoremap > <C-W>>
-nnoremap - <C-W>-
-nnoremap + <C-W>+
+nnoremap <C-j> <C-W><C-j>
+nnoremap <C-k> <C-W><C-k>
+nnoremap <C-l> <C-W><C-l>
+nnoremap <C-h> <C-W><C-h>
+
+" Pane resizing
+nnoremap <M-j> <C-W>-
+nnoremap <M-k> <C-W>+
+nnoremap <M-l> <C-W>>
+nnoremap <M-h> <C-W><lt>
+nnoremap <Esc>j <C-W>-
+nnoremap <Esc>k <C-W>+
+nnoremap <Esc>l <C-W>>
+nnoremap <Esc>h <C-W><lt>
+
+nmap <Esc> <M>
+
+" Simpler pane splitting
+nnoremap <Bar> :vsp<CR>
+nnoremap <Bslash> :sp<CR>
 
 " Causes new split locations to match intuition
 set splitright 
