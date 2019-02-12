@@ -145,7 +145,7 @@ if [ -f ~/.bash_aliases ]; then
   . ~/.bash_aliases
 fi
 
-if [ -f ~/.bash_aliases.osx ]; then
+if [[ "$(uname -s)" == Darwin ]] && [ -f ~/.bash_aliases.osx ]; then
   . ~/.bash_aliases.osx
 fi
 
