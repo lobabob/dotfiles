@@ -129,8 +129,11 @@ extract() {
 }
 
 parse_git_branch() {
-  #git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ ⎇ [\1]/'
-  git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ [\1]/'
+  if [[ "$(uname -s)" == Darwin ]]; then
+    git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ ⎇ [\1]/'
+  else
+    git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ [\1]/'
+  fi
 }
 
 # Alias definitions.
@@ -142,11 +145,25 @@ if [ -f ~/.bash_aliases ]; then
   . ~/.bash_aliases
 fi
 
+if [ -f ~/.bash_aliases.osx ]; then
+  . ~/.bash_aliases.osx
+fi
+
 # ----------------
 # Git Autocomplete
 # ----------------
 
 if [ -f ~/.git-completion.bash ]; then
   . ~/.git-completion.bash
+fi
+
+# set PATH so it includes user's private bin if it exists
+if [ -d "$HOME/bin" ] ; then
+  PATH="$HOME/bin:$PATH"
+fi
+
+# set PATH so it includes user's private bin if it exists
+if [ -d "$HOME/.local/bin" ] ; then
+  PATH="$HOME/.local/bin:$PATH"
 fi
 

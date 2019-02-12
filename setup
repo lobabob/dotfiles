@@ -3,72 +3,23 @@
 declare -r EXECUTABLE=$(basename ${BASH_SOURCE[0]})
 declare -r BASE_DIR=$(dirname ${BASH_SOURCE[0]})
 declare -r BACKUP_DIR="$BASE_DIR/_backup"
+declare -r OS_NAME=$(uname -s)
 
-usage() {
-  cat <<EOF
-USAGE
-  ./$EXECUTABLE [OPTION]... [PACKAGE]...
-
-DESCRIPTION
-  Symlinks dotfiles into home directory. If no package names are specified, all
-  packages will be (un)installed. Specify package names to (un)install a subset
-  of packages.
-
-  -h, --help       Display this message
-  -u, --uninstall  Sets setup mode to uninstall packages. Will restore any
-                   backup dotfiles if they exist for the packages uninstalled.
-
-DEPENDENCIES
-  GNU Stow (https://www.gnu.org/software/stow/) is required for this script to
-  run. You will be prompted to install it if it isn't already installed.
-
-EXAMPLES
-  ./$EXECUTABLE
-    Install everything
-
-  ./$EXECUTABLE bash vim
-    Only install bash and vim dotfiles
-
-  ./$EXECUTABLE --uninstall
-    Uninstall everything
-
-  ./$EXECUTABLE --uninstall bash vim
-    Only uninstall bash and vim dotfiles
-EOF
-}
-
-unrecognized_option() {
-  cat <<EOF
-$EXECUTABLE: unrecognized option '$1'
-Try '$EXECUTABLE --help' for more information.
-EOF
-}
-
-echo_error() {
-  echo -e "\033[0;31m$1\033[0m"
-}
-
-echo_warn() {
-  echo -e "\033[0;33m$1\033[0m"
-}
-
-echo_success() {
-  echo -e "\033[0;32m$1\033[0m"
-}
-
-echo_info() {
-  echo -e "\033[0;36m$1\033[0m"
-}
+. utility
 
 ######## Parse args
 
 uninstall_mode=0
+no_script_mode=0
 packages=()
 
 for arg in $@; do
   case $arg in 
     --uninstall | -u)
       uninstall_mode=1
+      ;;
+    --no-scripts)
+      no_script_mode=1
       ;;
     --help | -h)
       usage
@@ -129,11 +80,10 @@ auto_detect_pkg_mgr() {
   fi
 }
 
-if ! which stow > /dev/null; then
-  echo_info "GNU Stow is required for this script to run. Attempting to auto-install..."
-  auto_detect_pkg_mgr pkg_mgr
+update_pkg_mgr_cache() {
+  local update_package_lists
 
-  echo -n "Update package lists before installing stow (y/n): "
+  echo -n "Update package lists before auto-installing anything (y/n): "
   read update_package_lists
 
   if [[ $update_package_lists =~ ^(y|yes)$ ]]; then
@@ -147,22 +97,40 @@ if ! which stow > /dev/null; then
       sudo $pkg_mgr update > /dev/null 2>&1
     fi
   fi
+}
 
-  echo_warn "Installing stow..."
-  if [[ $pkg_mgr == pacman ]]; then
-    sudo pacman -S stow
-  elif [[ $pkg_mgr == brew ]]; then
-    brew install stow
-  else
-    sudo $pkg_mgr install -y stow
+install_bin_called_once=0
+install_bin() {
+  if [ -z $pkg_mgr ]; then
+    auto_detect_pkg_mgr pkg_mgr
+    declare -r pkg_mgr=$pkg_mgr
   fi
 
-  if [[ $? -gt 0 ]]; then
-    echo_error "Was not able to auto-install GNU Stow. Install it before running this script."
+  if [[ $install_bin_called_once -eq 0 ]]; then
+    update_pkg_mgr_cache
+    install_bin_called_once=1
+  fi
+
+  echo_warn "Installing [$1]..."
+  if [[ $pkg_mgr == pacman ]]; then
+    sudo pacman -S $1
+  elif [[ $pkg_mgr == brew ]]; then
+    brew install $1
+  else
+    sudo $pkg_mgr install -y $1
+  fi
+
+  if [[ $? -gt 0 ]] && [[ $2 ]]; then
+    echo_error "Was not able to auto-install [$1]. Install it before running this script."
     exit 7
   fi
 
-  echo_success "Stow installed!"
+  echo_success "[$1] installed"
+}
+
+if ! which stow > /dev/null; then
+  echo_info "GNU Stow is required for this script to run. Attempting to auto-install..."
+  install_bin "stow"
 fi
 
 ######## (Un)install dotfile packages
@@ -196,16 +164,32 @@ restore() {
   done
 }
 
+setup_sub_scripts() {
+  if [ $no_script_mode -eq 0 ]; then
+    for package in ${packages[@]}; do
+      if [ -f $BASE_DIR/$package/setup_ ] && [ -x $BASE_DIR/$package/setup_ ]; then
+        echo_info "Running setup sub script for the [$package] package"
+        . $BASE_DIR/$package/setup_
+      fi
+    done
+  fi
+}
+
 if [[ $uninstall_mode == 0 ]]; then
   backup
-  stow -t $HOME -d $BASE_DIR ${packages[@]}
-  echo_success "Dotfiles installed for ${packages[@]}"
+  setup_sub_scripts
+  stow -t $HOME -d $BASE_DIR --ignore="_" ${packages[@]} || \
+    (echo_error "Dotfiles failed to install for ${packages[*]}"; exit 10)
+  #IFS=" "   # For OSX Compatability
+  echo_success "Dotfiles installed for ${packages[*]}"
 else
   stow -t $HOME -d $BASE_DIR -n -D ${packages[@]} > /dev/null 2>&1 
   if [[ $? == 0 ]]; then
-    stow -t $HOME -d $BASE_DIR -D ${packages[@]} > /dev/null
+    stow -t $HOME -d $BASE_DIR -D ${packages[@]} > /dev/null || \
+      (echo_error "Dotfiles failed to uninstall ${packages[*]}"; exit 10)
     restore
   fi
-  echo_success "Dotfiles uninstalled for ${packages[@]}"
+  #IFS=" "   # For OSX Compatability
+  echo_success "Dotfiles uninstalled for ${packages[*]}"
 fi
 

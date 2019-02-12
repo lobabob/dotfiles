@@ -1,0 +1,5 @@
+# OSX Specific Aliases
+###########
+
+alias ls='gls --color=auto -F --group-directories-first'
+

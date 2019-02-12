@@ -29,9 +29,11 @@ Uninstalling a package will auto-restore any backup dotfiles that exist for that
 
 #### How to add a new package
 
-Base level folder is your package. All the dotfiles that belong to that package go in that folder. Complex layouts are supported (e.g. a package needing dotfiles in `~/.local/share`).
+Base level folder is your package. All the dotfiles that belong to that package go in that folder. Complex layouts are supported (e.g. a package needing dotfiles in `~/.local/share`). Include an executable `setup_` script in the base of your package if you want to run some package specific script on install.
 
 Directory names that start with `_` are reserved for use by the setup script.
+
+Files that end in `_` are executed by the setup script
 
 ```
 # Simple example
@@ -49,6 +51,7 @@ repo/
     ├─ .local
     |   └─ share
     |      └─ some_other_config_file
+    ├─ setup_
     └─ .yet_another_config_file
 ```
 

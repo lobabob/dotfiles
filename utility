@@ -1,0 +1,60 @@
+#!/bin/bash
+
+usage() {
+  cat <<EOF
+USAGE
+  ./$EXECUTABLE [OPTION]... [PACKAGE]...
+
+DESCRIPTION
+  Symlinks dotfiles into home directory. If no package names are specified, all
+  packages will be (un)installed. Specify package names to (un)install a subset
+  of packages.
+
+  -h, --help       Display this message.
+  -u, --uninstall  Sets setup mode to uninstall packages. Will restore any
+                   backup dotfiles if they exist for the packages uninstalled.
+  --no-scripts     Prevents setup sub scripts from running. Useful if you just
+                   want symlinking without installers running.
+
+DEPENDENCIES
+  GNU Stow (https://www.gnu.org/software/stow/) is required for this script to
+  run. You will be prompted to install it if it isn't already installed.
+
+EXAMPLES
+  ./$EXECUTABLE
+    Install everything
+
+  ./$EXECUTABLE bash vim
+    Only install bash and vim dotfiles
+
+  ./$EXECUTABLE --uninstall
+    Uninstall everything
+
+  ./$EXECUTABLE --uninstall bash vim
+    Only uninstall bash and vim dotfiles
+EOF
+}
+
+unrecognized_option() {
+  cat <<EOF
+$EXECUTABLE: unrecognized option '$1'
+Try '$EXECUTABLE --help' for more information.
+EOF
+}
+
+echo_error() {
+  echo -e "\033[0;31m$1\033[0m"
+}
+
+echo_warn() {
+  echo -e "\033[0;33m$1\033[0m"
+}
+
+echo_success() {
+  echo -e "\033[0;32m$1\033[0m"
+}
+
+echo_info() {
+  echo -e "\033[0;36m$1\033[0m"
+}
+

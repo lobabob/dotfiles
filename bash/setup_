@@ -1,0 +1,11 @@
+#!/bin/bash
+
+if [[ "$OS_NAME" == Darwin ]]; then
+  echo_info "Installing GNU binaries for OSX"
+  install_bin "coreutils"
+  install_bin "bash"
+else
+  echo_info "Installing Non-Mac specific binaries"
+  install_bin notify-send
+fi
+
