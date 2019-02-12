@@ -65,8 +65,8 @@ navigate_back=" $navigate 'tmux select-pane -l || tmux select-pane -t1'\
 
 resize_down="$navigate 'tmux resize-pane -D'  'tmux send-keys C-w -' true true"
 resize_up="$navigate 'tmux resize-pane -U'  'tmux send-keys C-w +' true true"
-resize_left="$navigate 'tmux resize-pane -L'  'tmux send-keys C-w \<' true true"
-resize_right="$navigate 'tmux resize-pane -R'  'tmux send-keys C-w \>' true true"
+resize_left="$navigate 'tmux resize-pane -L'  'tmux send-keys C-w \"<\"' true true"
+resize_right="$navigate 'tmux resize-pane -R'  'tmux send-keys C-w \">\"' true true"
 
 # QWERTY keys - comment these out if you don't use QWERTY layout!
 bind-key -n C-h run-shell "$navigate_left  &"

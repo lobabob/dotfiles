@@ -77,8 +77,6 @@ nnoremap <Esc>k <C-W>+
 nnoremap <Esc>l <C-W>>
 nnoremap <Esc>h <C-W><lt>
 
-nmap <Esc> <M>
-
 " Simpler pane splitting
 nnoremap <Bar> :vsp<CR>
 nnoremap <Bslash> :sp<CR>
