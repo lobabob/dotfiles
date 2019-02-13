@@ -79,9 +79,9 @@ nnoremap <Esc>l <C-W>>
 nnoremap <Esc>h <C-W><lt>
 
 " Simpler pane splitting
-nnoremap <M-\> :vsp<CR>
+nnoremap <M-=> :vsp<CR>
 nnoremap <M--> :sp<CR>
-nnoremap <Esc>\ :vsp<CR>
+nnoremap <Esc>= :vsp<CR>
 nnoremap <Esc>- :sp<CR>
 
 " Causes new split locations to match intuition

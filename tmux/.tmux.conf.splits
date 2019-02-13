@@ -69,7 +69,7 @@ resize_left="$navigate 'tmux resize-pane -L'  'tmux send-keys C-w \"<\"' true tr
 resize_right="$navigate 'tmux resize-pane -R'  'tmux send-keys C-w \">\"' true true"
 
 # Vertical/Horizontal split terminology is reversed between Vim and Tmux.
-split_vertical="$navigate 'tmux split-window -h'  'tmux send-keys M-\\' true true"
+split_vertical="$navigate 'tmux split-window -h'  'tmux send-keys M-=' true true"
 split_horizontal="$navigate 'tmux split-window'  'tmux send-keys M--' true true"
 
 # QWERTY keys - comment these out if you don't use QWERTY layout!
@@ -84,6 +84,6 @@ bind-key -n M-k run-shell "$resize_up &"
 bind-key -n M-h run-shell "$resize_left &"
 bind-key -n M-l run-shell "$resize_right &"
 
-bind-key -n M-\ run-shell "$split_vertical &"
+bind-key -n M-= run-shell "$split_vertical &"
 bind-key -n M-- run-shell "$split_horizontal &"
 
