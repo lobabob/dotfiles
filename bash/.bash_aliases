@@ -10,6 +10,7 @@ alias grep="grep --color=auto"
 alias fgrep="fgrep --color=auto"
 alias egrep="egrep --color=auto"
 alias tree="tree --charset='-' -C"
+alias proj="cd ~/Projects"
 
 # Raspberry Pi Specific
 alias temp='sed "s/\(...\)$/.\1°C/" < /sys/class/thermal/thermal_zone0/temp'
