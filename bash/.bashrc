@@ -128,8 +128,26 @@ extract() {
   fi
 }
 
-parse_git_branch() {
+get_platform() {
   if [[ "$(uname -s)" == Darwin ]]; then
+    eval "$1=Mac"
+  else
+    cat /proc/version | grep -iq microsoft
+    first_check=$?
+    cat /proc/sys/kernel/osrelease | grep -iq microsoft
+    second_check=$?
+
+    if [ $first_check -eq 0 ] || [ $second_check -eq 0 ]; then
+      eval "$1=Windows"
+    else
+      eval "$1=Linux"
+    fi
+  fi
+}
+
+parse_git_branch() {
+  get_platform platform
+  if [[ ! $platform == Windows ]]; then
     git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ ⎇ [\1]/'
   else
     git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ [\1]/'
