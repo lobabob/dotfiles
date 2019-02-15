@@ -7,14 +7,13 @@ export EDITOR="$VISUAL"
 # Terminal Settings
 #####################
 
-#TERM=xterm-color
 TERM=xterm-256color
 force_color_prompt=yes
 color_prompt=yes
 mesg no
 
 # Enable vi editing mode in bash
-set -o vi
+# set -o vi
 
 # Don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
@@ -184,4 +183,10 @@ fi
 if [ -d "$HOME/.local/bin" ] ; then
   PATH="$HOME/.local/bin:$PATH"
 fi
+
+# Base16 Shell
+BASE16_SHELL="$HOME/.config/base16-shell/"
+[ -n "$PS1" ] && \
+  [ -s "$BASE16_SHELL/profile_helper.sh" ] && \
+    eval "$("$BASE16_SHELL/profile_helper.sh")"
 

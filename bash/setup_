@@ -4,8 +4,14 @@ if [[ "$OS_NAME" == Darwin ]]; then
   echo_info "Installing GNU binaries for OSX"
   install_bin "coreutils"
   install_bin "bash"
-#else
-#  echo_info "Installing Non-Mac specific binaries"
-#  install_bin notify-send
 fi
+
+# Set the shell theme
+BASE16_THEME=snazzy
+BASE16_SHELL="$HOME/.config/base16-shell/"
+[ -s "$BASE16_SHELL/profile_helper.sh" ] && \
+  eval "$("$BASE16_SHELL/profile_helper.sh")"
+
+echo_info "Setting shell theme to: $BASE16_THEME"
+_base16 "/home/lobabob/.config/base16-shell/scripts/base16-$BASE16_THEME.sh" $BASE16_THEME
 
