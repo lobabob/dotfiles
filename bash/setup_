@@ -1,9 +1,15 @@
 #!/bin/bash
 
 if [[ "$OS_NAME" == Darwin ]]; then
-  echo_info "Installing GNU binaries for OSX"
-  install_bin "coreutils"
-  install_bin "bash"
+  echo_info "Installing GNU binaries for OSX that aren't already installed"
+
+  if ! which gls > /dev/null; then
+    install_bin "coreutils"
+  fi
+  
+  if [ $BASH_VERSINFO -lt 4 ]; then
+    install_bin "bash"
+  fi
 fi
 
 # Set the shell theme
