@@ -1,22 +1,87 @@
-# Exports
-###########
+# ----------------
+# Functions
+# ----------------
+
+extract() {
+  if [ -f $1 ] ; then
+    case $1 in
+      *.tar.bz2)  tar xvjf $1     ;;
+      *.tar.gz)   tar xvzf $1     ;;
+      *.bz2)      bunzip2 $1      ;;
+      *.rar)      unrar x $1      ;;
+      *.gz)       gunzip $1       ;;
+      *.tar)      tar xvf $1      ;;
+      *.tbz2)     tar xvjf $1     ;;
+      *.tgz)      tar xvzf $1     ;;
+      *.zip)      unzip $1        ;;
+      *.Z)        uncompress $1   ;;
+      *.7z)       7z x $1         ;;
+      *)          echo "Don't know how to extract '$1'..." ;;
+    esac
+  else
+    echo "'$1' is not a valid file!"
+  fi
+}
+
+get_platform() {
+  local result
+
+  if [[ "$(uname -s)" == Darwin ]]; then
+    result="Mac"
+  else
+    cat /proc/version | grep -iq microsoft
+    first_check=$?
+    cat /proc/sys/kernel/osrelease | grep -iq microsoft
+    second_check=$?
+
+    if [ $first_check -eq 0 ] || [ $second_check -eq 0 ]; then
+      result="WSL"
+    else
+      result="Linux"
+    fi
+  fi
+
+  if [ -n "$1" ]; then
+    eval "$1=$result"
+  else
+    echo $result
+  fi
+}
+
+parse_git_branch() {
+  get_platform platform
+  if [[ ! $platform == WSL ]]; then
+    git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ ⎇ [\1]/'
+  else
+    git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ [\1]/'
+  fi
+}
+
+# ----------------
+# Shell Settings
+# ----------------
 
 export VISUAL=vim
 export EDITOR="$VISUAL"
-
-# Terminal Settings
-#####################
 
 TERM=xterm-256color
 force_color_prompt=yes
 color_prompt=yes
 mesg no
 
+# https://github.com/Microsoft/WSL/issues/352
+if [ "$(umask)" = "0000" ]; then
+  if [ $EUID -eq 0 ];then
+    umask 022
+  else
+    umask 002
+  fi
+fi
+
 # Enable vi editing mode in bash
-# set -o vi
+set -o vi
 
 # Don't put duplicate lines or lines starting with space in the history.
-# See bash(1) for more options
 HISTCONTROL=ignoreboth
 
 # Append to the history file, don't overwrite it
@@ -33,8 +98,20 @@ shopt -s checkwinsize
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
-# Prompt Settings
-###################
+# enable programmable completion features (you don't need to enable
+# this, if it's already enabled in /etc/bash.bashrc and /etc/profile
+# sources /etc/bash.bashrc).
+if ! shopt -oq posix; then
+  if [ -f /usr/share/bash-completion/bash_completion ]; then
+    . /usr/share/bash-completion/bash_completion
+  elif [ -f /etc/bash_completion ]; then
+    . /etc/bash_completion
+  fi
+fi
+
+# ----------------
+# Shell Prompt
+# ----------------
 
 # set variable identifying the chroot you work in (used in the prompt below)
 if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
@@ -63,8 +140,15 @@ if [ -n "$force_color_prompt" ]; then
 fi
 
 if [ "$color_prompt" = yes ]; then
-  PS1="${debian_chroot:+($debian_chroot)}\
-\[\033[00;32m\]\u@\h\[\033[00;33m\]:\W\[\033[36m\]\$(parse_git_branch)\[\033[00m\] \$ \[\033[00m\]"
+  PS1="${debian_chroot:+($debian_chroot)}"
+
+  if [ $EUID -eq 0 ]; then
+    PS1="$PS1\[\033[00;31m\]\u"
+  else
+    PS1="$PS1\[\033[00;32m\]\u"
+  fi
+
+  PS1="$PS1@\h\[\033[00;33m\]:\W\[\033[36m\]\$(parse_git_branch)\[\033[00m\] \$ \[\033[00m\]"
 else
   PS1="${debian_chroot:+($debian_chroot)}\u:\W\$(parse_git_branch) \$ "
 fi
@@ -80,83 +164,26 @@ case "$TERM" in
     ;;
 esac
 
-# enable color support of ls and also add handy aliases
-if [ -x /usr/bin/dircolors ]; then
-  test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-  alias ls='ls --color=auto'
-  #alias dir='dir --color=auto'
-  #alias vdir='vdir --color=auto'
+# ----------------
+# Shell Theme
+# ----------------
 
-  alias grep='grep --color=auto'
-  alias fgrep='fgrep --color=auto'
-  alias egrep='egrep --color=auto'
-fi
+# Base16 Shell Themes
+BASE16_SHELL="$HOME/.config/base16-shell/"
+[ -n "$PS1" ] && \
+  [ -s "$BASE16_SHELL/profile_helper.sh" ] && \
+    eval "$("$BASE16_SHELL/profile_helper.sh")"
 
-# enable programmable completion features (you don't need to enable
-# this, if it's already enabled in /etc/bash.bashrc and /etc/profile
-# sources /etc/bash.bashrc).
-if ! shopt -oq posix; then
-  if [ -f /usr/share/bash-completion/bash_completion ]; then
-    . /usr/share/bash-completion/bash_completion
-  elif [ -f /etc/bash_completion ]; then
-    . /etc/bash_completion
+# Load custom dircolors if a theme hasn't been set
+if [ -z "$BASE16_THEME" ]; then
+  if [ -x /usr/bin/dircolors ]; then
+    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
   fi
 fi
 
-# Functions
-#############
-
-extract() {
-  if [ -f $1 ] ; then
-    case $1 in
-      *.tar.bz2)  tar xvjf $1     ;;
-      *.tar.gz)   tar xvzf $1     ;;
-      *.bz2)      bunzip2 $1      ;;
-      *.rar)      unrar x $1      ;;
-      *.gz)       gunzip $1       ;;
-      *.tar)      tar xvf $1      ;;
-      *.tbz2)     tar xvjf $1     ;;
-      *.tgz)      tar xvzf $1     ;;
-      *.zip)      unzip $1        ;;
-      *.Z)        uncompress $1   ;;
-      *.7z)       7z x $1         ;;
-      *)          echo "Don't know how to extract '$1'..." ;;
-    esac
-  else
-    echo "'$1' is not a valid file!"
-  fi
-}
-
-get_platform() {
-  if [[ "$(uname -s)" == Darwin ]]; then
-    eval "$1=Mac"
-  else
-    cat /proc/version | grep -iq microsoft
-    first_check=$?
-    cat /proc/sys/kernel/osrelease | grep -iq microsoft
-    second_check=$?
-
-    if [ $first_check -eq 0 ] || [ $second_check -eq 0 ]; then
-      eval "$1=Windows"
-    else
-      eval "$1=Linux"
-    fi
-  fi
-}
-
-parse_git_branch() {
-  get_platform platform
-  if [[ ! $platform == Windows ]]; then
-    git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ ⎇ [\1]/'
-  else
-    git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ [\1]/'
-  fi
-}
-
-# Alias definitions.
-# You may want to put all your additions into a separate file like
-# ~/.bash_aliases, instead of adding them here directly.
-# See /usr/share/doc/bash-doc/examples in the bash-doc package.
+# ----------------
+# Alias definitions
+# ----------------
 
 if [ -f ~/.bash_aliases ]; then
   . ~/.bash_aliases
@@ -167,26 +194,22 @@ if [[ "$(uname -s)" == Darwin ]] && [ -f ~/.bash_aliases.osx ]; then
 fi
 
 # ----------------
-# Git Autocomplete
+# Autocomplete Scripts
 # ----------------
 
 if [ -f ~/.git-completion.bash ]; then
   . ~/.git-completion.bash
 fi
 
-# set PATH so it includes user's private bin if it exists
+# ----------------
+# PATH Modifications
+# ----------------
+
 if [ -d "$HOME/bin" ] ; then
   PATH="$HOME/bin:$PATH"
 fi
 
-# set PATH so it includes user's private bin if it exists
 if [ -d "$HOME/.local/bin" ] ; then
   PATH="$HOME/.local/bin:$PATH"
 fi
-
-# Base16 Shell
-BASE16_SHELL="$HOME/.config/base16-shell/"
-[ -n "$PS1" ] && \
-  [ -s "$BASE16_SHELL/profile_helper.sh" ] && \
-    eval "$("$BASE16_SHELL/profile_helper.sh")"
 
