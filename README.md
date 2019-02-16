@@ -15,6 +15,13 @@ Under the hood, everything is being symlinked so updates are as simple as `git p
 Uninstalling a package will auto-restore any backup dotfiles that exist for that package. If you don't care about restoring potential backups, you can also manually uninstall with Stow directly, but I wouldn't recommend that.
 
 ```bash
+# Make sure you install all submodules
+git clone --recursive <this_repo>
+
+# or if you've already cloned without the --recursive flag
+git submodule init
+git submodule update
+
 # See a super helpful help screen
 ./setup --help
 
