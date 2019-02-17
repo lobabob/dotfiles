@@ -173,11 +173,14 @@ setup_sub_scripts() {
 
 if [[ $uninstall_mode == 0 ]]; then
   backup
-  setup_sub_scripts
+
   stow -t $HOME -d $BASE_DIR --ignore="_" -R stow
   stow -t $HOME -d $BASE_DIR --no-folding --ignore="_" -R ${packages[@]}
+  stowExitCode=$?
 
-  if [[ $? -gt 0 ]]; then
+  setup_sub_scripts
+
+  if [[ stowExitCode -gt 0 ]]; then
     echo_error "Dotfiles failed to install for ${packages[*]}"
     exit 10
   fi
