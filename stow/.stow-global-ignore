@@ -15,7 +15,7 @@ _darcs
 
 .+~            # emacs backup files
 \#.*\#         # emacs autosave files
-.+\.swp          # vim swap files
+.+\.sw.        # vim swap files
 
 ^/README.*
 ^/LICENSE.*

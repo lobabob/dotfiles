@@ -1,4 +1,10 @@
+# Across Packages
+
 .DS_Store
 *.swp
 _backup
+
+# Vim
+vim/.vim/.netrwhist
+vim/.vim/bundle
 
