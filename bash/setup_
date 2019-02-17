@@ -12,3 +12,9 @@ if [[ "$OS_NAME" == Darwin ]]; then
   fi
 fi
 
+# Makes it convenient to cd to the dotfiles dir
+already_exists=$(cat ~/.bash_aliases.extra 2> /dev/null | grep dotfiles)
+if [[ -z "$already_exists" ]]; then
+  echo "alias dotfiles=\"cd $(realpath $BASE_DIR)\"" >> $HOME/.bash_aliases.extra
+fi
+
