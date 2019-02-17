@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# Install all plugins
+echo_info "Making sure all vim plugins are installed"
+vim +'PlugInstall --sync' +qa
+

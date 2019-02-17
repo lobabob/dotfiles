@@ -1,4 +1,102 @@
-"           VIM CONFIG FILE
+"       Install Plugins
+"----------------------------
+
+" vim-plug handles this automatically
+" filetype plugin indent on
+
+" Install vim-plug if it's not already installed
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
+" Specify plugin directory (avoid standard vim dir names like "~/.vim/plugin")
+call plug#begin('~/.vim/bundle')
+
+Plug 'itchyny/lightline.vim'
+Plug 'mengelbrecht/lightline-bufferline'
+Plug 'itchyny/vim-gitbranch'
+Plug 'Yggdroot/indentLine'
+Plug 'tpope/vim-speeddating'
+Plug 'airblade/vim-gitgutter'
+
+Plug 'daviesjamie/vim-base16-lightline'
+Plug 'flazz/vim-colorschemes'
+Plug 'chriskempson/base16-vim'
+
+call plug#end()
+
+"     Configure Plugins
+"----------------------------
+
+" ----------------
+"    gitgutter
+" ----------------
+
+"let g:gitgutter_terminal_reports_focus=0
+set updatetime=200
+
+" ----------------
+"    indentLine
+" ----------------
+
+set list lcs=tab:\┊\
+let g:indentLine_char='┊'
+let g:indentLine_color_term = 239
+let g:indentLine_color_gui = '#A4E57E'
+let g:indentLine_enabled = 1
+
+" ----------------
+"    lightline
+" ----------------
+
+set laststatus=2    " Allows statusbar to show up with one window
+set showtabline=2   " Allows the tabline to show up with one window
+
+"let g:lightline.colorscheme = 'base16'
+let g:lightline = {
+  \ 'colorscheme': 'wombat',
+  \ 'active': {
+  \   'left': [ ['mode', 'paste'],
+  \             ['branch', 'readonly', 'filename'] ],
+  \   'right': [ ['column'],
+  \              ['percent'],
+  \              ['fileformat', 'fileencoding'] ],
+  \ },
+  \ 'component': {
+  \   'column': 'Col:%c',
+  \   'percent': '%p%%',
+  \ },
+  \ 'component_function': {
+  \   'branch': 'LightlineGitBranch',
+  \   'filename': 'LightlineFilename',
+  \ },
+\ }
+
+let g:lightline.tabline = { 'left': [['buffers']], 'right': [['close']] }
+let g:lightline.component_expand = { 'buffers': 'lightline#bufferline#buffers' }
+let g:lightline.component_type   = { 'buffers': 'tabsel' }
+let g:lightline#bufferline#unnamed = '[No Name]'
+
+" Ignore branch symbol if running within WSL
+let platform = substitute(system(". ~/.bash_functions; get_platform"), '\n\+$', '', '')
+
+function! LightlineGitBranch()
+  let branch = gitbranch#name()
+  let prefix = g:platform == 'WSL' ? '': '⎇ '
+
+  return branch != '' ? prefix.branch : ''
+endfunction
+
+" Combines modified status with the filename
+function! LightlineFilename()
+  let filename = expand('%:t') !=# '' ? expand('%:t') : '[No Name]'
+  let modified = &modified ? ' +' : ''
+  return filename . modified
+endfunction
+
+"          Vim Configuration
 "---------------------------------------
 
 "set nofoldenable
@@ -44,11 +142,11 @@ set hlsearch
 " Allows you to remove highlighting after done with search
 nnoremap <CR> :noh<CR><CR>
 
-" Don't show mode in last line of screen. Airline already does that.
+" Don't show mode in last line of screen. Lightline already does that.
 set noshowmode
 
 " Highlight the current line
-set cursorline
+"set cursorline
 
 " Adds hotkeys to cycle through buffers
 :nnoremap <Tab> :bnext<CR>
@@ -96,73 +194,30 @@ set splitbelow
 " Better command-line completion
 set wildmenu
 
-" Show partial commands in the last line of the screen
-"set showcmd
-
-" Set to 256 colors
-set t_Co=256
-
-" Buffers screen updates instead of updating all the time
-"set lazyredraw
-
-" Colorscheme stuff if any
-"colorscheme 256-jungle
-"colorscheme jellybeans
-"colorscheme kolor
-"colorscheme molokai
-
-set background=light
-colorscheme wombat256mod
-
 " Highlight text over 80 columns wide
 "highlight OverLength ctermbg=darkred ctermfg=white guibg=#FFD9D9
 "match OverLength /\%80v.*/
 
-"       Plugin stuff
-"----------------------------
+" ----------------
+"   colorscheme
+" ----------------
 
-execute pathogen#infect()
-filetype plugin indent on
+" Set to 256 colors
+set t_Co=256
 
-"***** indentLine
-set list lcs=tab:\|\
-let g:indentLine_char='|'
-let g:indentLine_color_term = 239
-let g:indentLine_color_gui = '#A4E57E'
-let g:indentLine_enabled = 1
+colorscheme wombat256
 
-"***** vim-airline
-" Customized sections of statusbar
-function! AirlineInit()
-  let g:airline_section_a = airline#section#create(['mode',' ','branch'])
-  let g:airline_section_b = airline#section#create(['ffenc', 'hunks'])
-  let g:airline_section_y = airline#section#create(['L:%l', ' ', 'C:%c'])
-  let g:airline_section_z = airline#section#create_right(['%p%%'])
+" ----------------
+" colorscheme overrides
+" ----------------
 
-  " Displays ASCII value of char hovered over by cursor in hex
-  "let g:airline_section_z = airline#section#create_right(['%B'])
+highlight LineNr ctermbg=none
 
-  "let g:airline_section_b = '%{strftime("%c")}'
-  "let g:airline_section_y = 'BN: %{bufnr("%")}'
-endfunction
-autocmd VimEnter * call AirlineInit()
+"let g:gitgutter_override_sign_column_highlight = 1
+"highlight SignColumn ctermbg=none
 
-set laststatus=2    " Allows statusbar to show up with one window
-
-" Custom Seperator for statusbar
-let g:airline_left_sep = ''
-let g:airline_right_sep = ''
-
-" Tabline options
-let g:airline#extensions#tabline#enabled = 1
-"let g:airline#extensions#tabline#left_sep = ' '
-"let g:airline#extensions#tabline#left_alt_sep = '|'
-
-" fugitive integration with airline (fugitive is git wrapper)
-if !exists('g:airline_symbols')
-  let g:airline_symbols = {}
-endif
-let g:airline_symbols.branch = "|"
-let g:airline#extensions#branch#enabled = 1
-"let g:airline#extensions#branch#empty_message = ''
+highlight GitGutterAdd ctermbg=none ctermfg=2
+highlight GitGutterChange ctermbg=none ctermfg=12
+highlight GitGutterDelete ctermbg=none ctermfg=1
+highlight GitGutterChangeDelete ctermbg=none ctermfg=5
 
