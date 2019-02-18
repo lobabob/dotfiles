@@ -59,6 +59,11 @@ done
 
 declare -r packages
 
+######## Attempt to pull all package submodules in case they haven't already
+
+git submodule init > /dev/null 2>&1
+git submodule update > /dev/null 2>&1
+
 ######## Framework for installing packages
 
 auto_detect_pkg_mgr() {
