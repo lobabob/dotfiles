@@ -88,6 +88,13 @@ if [ -n "$force_color_prompt" ]; then
   fi
 fi
 
+
+if [ $EUID -eq 0 ]; then
+  prompt="#"
+else
+  prompt="$"
+fi
+
 if [ "$color_prompt" = yes ]; then
   PS1="${debian_chroot:+($debian_chroot)}"
 
@@ -97,9 +104,9 @@ if [ "$color_prompt" = yes ]; then
     PS1="$PS1\[\033[00;32m\]\u"
   fi
 
-  PS1="$PS1@\h\[\033[00;33m\]:\W\[\033[36m\]\$(parse_git_branch)\[\033[00m\] \$ \[\033[00m\]"
+  PS1="$PS1@\h\[\033[00;33m\]:\W\[\033[36m\]\$(parse_git_branch)\[\033[00m\] $prompt \[\033[00m\]"
 else
-  PS1="${debian_chroot:+($debian_chroot)}\u:\W\$(parse_git_branch) \$ "
+  PS1="${debian_chroot:+($debian_chroot)}\u:\W\$(parse_git_branch) $prompt "
 fi
 
 unset color_prompt force_color_prompt
