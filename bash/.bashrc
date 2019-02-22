@@ -135,6 +135,11 @@ if [ -z "$BASE16_THEME" ]; then
   if [ -x /usr/bin/dircolors ]; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
   fi
+# If there is a theme, OTHER_WRITABLE dirs need to have normal dir colors # or they'll be unreadable on WSL
+elif [[ $(get_platform) == WSL ]]; then
+  if [ -x /usr/bin/dircolors ]; then
+    test -r ~/.dircolors.wsl && eval "$(dircolors -b ~/.dircolors.wsl)" || eval "$(dircolors -b)"
+  fi
 fi
 
 # ----------------
