@@ -1,0 +1,59 @@
+{
+  // General Settings
+  "workbench.iconTheme": "material-icon-theme",
+  "editor.tabSize": 2,
+  "editor.rulers": [ 120 ],
+  // "terminal.integrated.windowsEnableConpty": true,
+  "terminal.integrated.shell.windows": "C:\\Windows\\System32\\bash.exe",
+  "terminal.external.windowsExec": "C:\\Windows\\System32\\bash.exe",
+  // "workbench.colorTheme": "Adapta Nokto",
+  "workbench.colorTheme": "Arc Dark",
+  // Base16 OceanicNext terminal color scheme
+  "workbench.colorCustomizations": {
+    // "terminal.background": "#1b2b34",
+    "terminal.ansiRed": "#ab4642",
+    "terminal.ansiGreen": "#a1b56c",
+    "terminal.ansiYellow": "#f7ca88",
+    "terminal.ansiBlue": "#7cafc2",
+    "terminal.ansiMagenta": "#ba8baf",
+    "terminal.ansiCyan": "#86c1b9",
+    "terminal.ansiWhite": "#d8d8d8",
+    "terminal.ansiBrightBlack": "#585858",
+    "terminal.ansiBrightRed": "#ab4642",
+    "terminal.ansiBrightGreen": "#a1b56c",
+    "terminal.ansiBrightYellow": "#f7ca88",
+    "terminal.ansiBrightBlue": "#7cafc2",
+    "terminal.ansiBrightMagenta": "#ba8baf",
+    "terminal.ansiBrightCyan": "#86c1b9",
+    "terminal.ansiBrightWhite": "#f8f8f8",
+  },
+  "workbench.startupEditor": "newUntitledFile",
+  "editor.cursorBlinking": "solid",
+  "material-icon-theme.showUpdateMessage": false,
+  "extensions.ignoreRecommendations": false,
+  "git.enabled": false,
+  // "git.path": "C:\\Users\\fkday\\wslgit.exe",
+  "files.eol": "\n",
+  "explorer.confirmDelete": false,
+  "window.zoomLevel": 0,
+  "editor.multiCursorModifier": "alt",
+
+  // Vim Settings
+  "vim.useSystemClipboard": true,
+  "vim.useCtrlKeys": true,
+  "vim.hlsearch": true,
+  "vim.incsearch": true,
+  "vim.handleKeys": {
+    "<C-o>": false,
+    "<C-n>": false,
+    "<C-w>": false,
+    "<C-k>": false,
+  },
+  "vim.normalModeKeyBindingsNonRecursive": [
+    {
+      "before": [ "<CR>" ],
+      "commands": [ ":noh" ]
+    },
+  ],
+  "javascript.updateImportsOnFileMove.enabled": "always",
+}
