@@ -61,8 +61,17 @@ declare -r packages
 
 ######## Attempt to pull all package submodules in case they haven't already
 
-git submodule init > /dev/null 2>&1
-git submodule update > /dev/null 2>&1
+echo_info "Loading any submodules in the dotfiles repo"
+
+$(cd $BASE_DIR; git submodule init)
+$(cd $BASE_DIR; git submodule update)
+
+######## Ensures brew is installed on OSX
+
+if [[ "$OS_NAME" == Darwin ]] && ! which brew > /dev/null; then
+  echo_info "Installing Brew"
+  /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+fi
 
 ######## Framework for installing packages
 
