@@ -77,7 +77,7 @@ bind-key -n C-h run-shell -b "$navigate_left"
 bind-key -n C-j run-shell -b "$navigate_down"
 bind-key -n C-k run-shell -b "$navigate_up"
 bind-key -n C-l run-shell -b "$navigate_right"
-bind-key -n C-\ run-shell -b "$navigate_back"
+bind-key -n C-'\' run-shell -b "$navigate_back"
 
 bind-key -n M-j run-shell -b "$resize_down"
 bind-key -n M-k run-shell -b "$resize_up"
