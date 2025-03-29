@@ -29,9 +29,9 @@ get_platform() {
   if [[ "$(uname -s)" == Darwin ]]; then
     result="Mac"
   else
-    cat /proc/version | grep -iq microsoft
+    cat /proc/version 2> /dev/null | grep -iq microsoft
     first_check=$?
-    cat /proc/sys/kernel/osrelease | grep -iq microsoft
+    cat /proc/sys/kernel/osrelease 2> /dev/null | grep -iq microsoft
     second_check=$?
 
     if [ $first_check -eq 0 ] || [ $second_check -eq 0 ]; then
