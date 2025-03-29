@@ -2,12 +2,12 @@
 
 # Set the shell theme
 if [ -z "$BASE16_THEME" ]; then
-  THEME=oceanicnext
+  BASE16_THEME=oceanicnext
   BASE16_SHELL="$HOME/.config/base16-shell/"
   [ -s "$BASE16_SHELL/profile_helper.sh" ] && \
     eval "$("$BASE16_SHELL/profile_helper.sh")"
 
   echo_info "Setting shell theme to: $BASE16_THEME"
-  _base16 "/home/lobabob/.config/base16-shell/scripts/base16-$THEME.sh" $THEME
+  _base16 "$HOME/.config/base16-shell/scripts/base16-$BASE16_THEME.sh" $BASE16_THEME
 fi
 

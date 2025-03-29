@@ -22,7 +22,10 @@ export EDITOR="$VISUAL"
 TERM=xterm-256color
 force_color_prompt=yes
 color_prompt=yes
-mesg no
+
+if which mesg > /dev/null; then
+  mesg no
+fi
 
 # https://github.com/Microsoft/WSL/issues/352
 if [ "$(umask)" = "0000" ]; then
