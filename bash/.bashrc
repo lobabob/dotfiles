@@ -23,7 +23,7 @@ TERM=xterm-256color
 force_color_prompt=yes
 color_prompt=yes
 
-if which mesg > /dev/null; then
+if which mesg > /dev/null 2>&1; then
   mesg no
 fi
 
